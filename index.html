@@ -284,7 +284,7 @@
     <div class="login-sub">PUBLIC SCHOOL</div>
     <input type="text" id="login-user" placeholder="Username" autocomplete="username" />
     <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password" />
-    <button class="btn-login" onclick="try{doLogin()}catch(e){alert(e.message)}">LOGIN</button>
+    <button class="btn-login" id="loginBtn">LOGIN</button>
     <div class="login-quote">"ज्ञान ही शक्ति है"</div>
   </div>
 </div>
@@ -1472,6 +1472,40 @@ function printFeeReceipt() {
   </div>
   
   <script>window.onload = function(){ window.print(); }</script>
+<script>
+// Define doLogin immediately when page loads
+(function() {
+  function doLoginSafe() {
+    var userEl = document.getElementById('login-user');
+    var passEl = document.getElementById('login-pass');
+    if (!userEl || !passEl) { alert('Page error - refresh karein'); return; }
+    var user = userEl.value.replace(/\s/g,'').toLowerCase();
+    var pass = passEl.value.replace(/\s/g,'');
+    if (user === 'admin' && pass === 'shanti123') {
+      try { localStorage.setItem('msps_logged_in', '1'); } catch(e) {}
+      var lp = document.getElementById('login-page');
+      var ap = document.getElementById('app');
+      if (lp) lp.style.display = 'none';
+      if (ap) { ap.classList.remove('hidden'); ap.style.display = 'flex'; }
+      try { showSection('dashboard'); } catch(e) {}
+      try { loadDashboard(); } catch(e) {}
+    } else {
+      alert('Username ya password galat hai!\nUsername: admin\nPassword: shanti123');
+    }
+  }
+
+  // Attach to button as soon as DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('loginBtn');
+    if (btn) btn.onclick = doLoginSafe;
+    var passEl = document.getElementById('login-pass');
+    if (passEl) passEl.onkeydown = function(e) { if(e.key==='Enter') doLoginSafe(); };
+  });
+
+  // Also make global
+  window.doLogin = doLoginSafe;
+})();
+</script>
 </body>
 </html>`);
   win.document.close();
