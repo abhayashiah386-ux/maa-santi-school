@@ -688,17 +688,36 @@ let currentFeeStudent = null;
 
 /* ════════ AUTH ════════ */
 function doLogin() {
-  const user = document.getElementById('login-user').value.trim();
-  const pass = document.getElementById('login-pass').value.trim();
-  if (user === 'admin' && pass === 'shanti123') {
-    localStorage.setItem('msps_logged_in', '1');
-    showApp();
-  } else {
-    showToast('Invalid username or password.', 'error');
+  try {
+    const userEl = document.getElementById('login-user');
+    const passEl = document.getElementById('login-pass');
+    if (!userEl || !passEl) { alert('Page load error. Please refresh.'); return; }
+    const user = userEl.value.trim().toLowerCase();
+    const pass = passEl.value.trim();
+    if (user === 'admin' && pass === 'shanti123') {
+      localStorage.setItem('msps_logged_in', '1');
+      showApp();
+    } else {
+      alert('Username ya password galat hai!\nUsername: admin\nPassword: shanti123');
+    }
+  } catch(e) {
+    alert('Error: ' + e.message);
   }
 }
-document.getElementById('login-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doLogin();
+document.addEventListener('DOMContentLoaded', function() {
+  const passEl = document.getElementById('login-pass');
+  if (passEl) {
+    passEl.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doLogin();
+    });
+  }
+  const loginBtn = document.querySelector('.btn-login');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      doLogin();
+    });
+  }
 });
 
 function doLogout() {
@@ -725,6 +744,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (el) el.value = today;
   });
+  // Ensure login button works
+  const loginBtn = document.querySelector('.btn-login');
+  if (loginBtn) {
+    loginBtn.onclick = function(e) { e.preventDefault(); doLogin(); };
+  }
 });
 
 /* ════════ NAVIGATION ════════ */
