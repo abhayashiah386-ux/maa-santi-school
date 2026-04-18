@@ -284,7 +284,21 @@
     <div class="login-sub">PUBLIC SCHOOL</div>
     <input type="text" id="login-user" placeholder="Username" autocomplete="username" />
     <input type="password" id="login-pass" placeholder="Password" autocomplete="current-password" />
-    <button class="btn-login" id="loginBtn">LOGIN</button>
+    <button class="btn-login" id="loginBtn" onclick="
+  var u=document.getElementById('login-user').value.trim().toLowerCase();
+  var p=document.getElementById('login-pass').value.trim();
+  if(u==='admin' && p==='shanti123'){
+    localStorage.setItem('msps_logged_in','1');
+    document.getElementById('login-page').style.display='none';
+    var a=document.getElementById('app');
+    a.classList.remove('hidden');
+    a.style.display='flex';
+    try{showSection('dashboard');}catch(e){}
+    try{loadDashboard();}catch(e){}
+  } else {
+    alert('Galat username/password!\nUsername: admin\nPassword: shanti123');
+  }
+">LOGIN</button>
     <div class="login-quote">"ज्ञान ही शक्ति है"</div>
   </div>
 </div>
