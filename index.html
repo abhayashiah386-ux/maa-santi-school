@@ -9,13 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
-  <script>
-  // Safe login - works even if Firebase fails to load
-  window.onerror = function(msg, src, line) {
-    console.warn('JS Error:', msg, src, line);
-    return true;
-  };
-  </script>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -731,21 +725,7 @@ function doLogin() {
     alert('Error hua: ' + e.message + '\nPage refresh karein.');
   }
 }
-document.addEventListener('DOMContentLoaded', function() {
-  const passEl = document.getElementById('login-pass');
-  if (passEl) {
-    passEl.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') doLogin();
-    });
-  }
-  const loginBtn = document.querySelector('.btn-login');
-  if (loginBtn) {
-    loginBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      doLogin();
-    });
-  }
-});
+
 
 function doLogout() {
   localStorage.removeItem('msps_logged_in');
@@ -771,11 +751,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const el = document.getElementById(id);
     if (el) el.value = today;
   });
-  // Ensure login button works
-  const loginBtn = document.querySelector('.btn-login');
-  if (loginBtn) {
-    loginBtn.onclick = function(e) { e.preventDefault(); doLogin(); };
-  }
 });
 
 /* ════════ NAVIGATION ════════ */
@@ -1486,44 +1461,5 @@ function printFeeReceipt() {
   </div>
   
   <script>window.onload = function(){ window.print(); }</script>
-<script>
-// Define doLogin immediately when page loads
-(function() {
-  function doLoginSafe() {
-    var userEl = document.getElementById('login-user');
-    var passEl = document.getElementById('login-pass');
-    if (!userEl || !passEl) { alert('Page error - refresh karein'); return; }
-    var user = userEl.value.replace(/\s/g,'').toLowerCase();
-    var pass = passEl.value.replace(/\s/g,'');
-    if (user === 'admin' && pass === 'shanti123') {
-      try { localStorage.setItem('msps_logged_in', '1'); } catch(e) {}
-      var lp = document.getElementById('login-page');
-      var ap = document.getElementById('app');
-      if (lp) lp.style.display = 'none';
-      if (ap) { ap.classList.remove('hidden'); ap.style.display = 'flex'; }
-      try { showSection('dashboard'); } catch(e) {}
-      try { loadDashboard(); } catch(e) {}
-    } else {
-      alert('Username ya password galat hai!\nUsername: admin\nPassword: shanti123');
-    }
-  }
-
-  // Attach to button as soon as DOM is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('loginBtn');
-    if (btn) btn.onclick = doLoginSafe;
-    var passEl = document.getElementById('login-pass');
-    if (passEl) passEl.onkeydown = function(e) { if(e.key==='Enter') doLoginSafe(); };
-  });
-
-  // Also make global
-  window.doLogin = doLoginSafe;
-})();
-</script>
-</body>
-</html>`);
-  win.document.close();
-}
-</script>
 </body>
 </html>
